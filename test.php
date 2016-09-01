@@ -26,12 +26,10 @@
             <li>5th</li>
                <p class = "red">
                 <?php
-                for($i = 1; $i < 10; $i++)
-                {
-                    print $i + "단";
-                    for($j = 1; $j < 10; $j++)
-                    {
-                       print ($i + "*" + $j + "=" + ($i * $j));
+                for($i = 1; $i < 10; $i++){
+                    print $i."단<br>";
+                    for($j = 1; $j < 10; $j++){
+                       print $i."x".$j."=".$i * $j."<br>";
                     }
                     print "<chr><br>";
                 }
