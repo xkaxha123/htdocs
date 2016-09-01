@@ -11,12 +11,32 @@
         <ul>
             <li>1th</li>
                 <h1>김햄준 엉덩이는 퍼스트 힙이다.</h1>
-            <li>second</li>
+            <li>2nd</li>
                 <h2>점승리 엉덩이는 세컨드 힙이다.</h1>
             <li>3rd</li>
                 <h3>이륙구 엉덩이는 써드   힙이다.</h3>
             <li>4th</li>
-                <h4>정태웅은 민간인이다.</h4>
+                <?php
+                    print PHP_VERSION."<br>";
+                    print PHP_OS."<br>";
+                    define("hello", "안녕하냐?");
+                    print hello."<br>";
+                    print __DIR__;
+                ?>
+            <li>5th</li>
+               <p class = "red">
+                <?php
+                for($i = 1; $i < 10; $i++)
+                {
+                    print $i + "단";
+                    for($j = 1; $j < 10; $j++)
+                    {
+                       print ($i + "*" + $j + "=" + ($i * $j));
+                    }
+                    print "<chr><br>";
+                }
+                ?>
+            </p>
         </ul>
     </body>
 </html>
