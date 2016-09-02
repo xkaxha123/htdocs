@@ -1,4 +1,4 @@
-<?php
+﻿<?php
     //phpinfo();
 ?>
 <!doctype html>
@@ -6,6 +6,13 @@
     <<head>
         <meta charset = "utf-8">
     <title>엉덩이 연구 논문</title>
+    <style type="text/css">
+        .brcolor{
+            background-color: bisque;}
+        .color99{
+            background-color: red;
+            color: white;}
+    </style>
     </head>
     <body>
         <ul>
@@ -24,14 +31,20 @@
                     print __DIR__;
                 ?>
             <li>5th</li>
-               <p class = "red">
+            <p class = "color99">
                 <?php
                 for($i = 1; $i < 10; $i++){
                     print $i."단<br>";
                     for($j = 1; $j < 10; $j++){
                        print $i."x".$j."=".$i * $j."<br>";
                     }
-                    print "<chr><br>";
+                    print "<br>";
+                }
+                
+                $a = array("월", "화", "수", "목", "금");
+                foreach($a as $value){
+                    print $value;
+                    print "<br>";
                 }
                 ?>
             </p>
