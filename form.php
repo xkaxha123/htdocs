@@ -1,8 +1,3 @@
-<?php
-
-?>
-
-
 <html>
     <head>
         <title>Text Send</title>
@@ -10,7 +5,7 @@
         <meta name = "viewport" content="width=device-width, initial-scale=1.0">
     </head>
     <body>
-        <form name ="form1"  method = "post" action = "View.php">
+        <form name ="form1" action = "view.php" method = "post">
             이름: <input type ="text" name ="onname"><br><br>
             내용: <textarea name ="bonmun" cols ="100" rows ="10"></textarea><br>
             취미: <input type ="checkbox" name ="hobby[]" value ="스포츠">스포츠<br>
