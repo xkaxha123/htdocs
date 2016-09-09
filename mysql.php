@@ -18,7 +18,9 @@
             $mysqli -> close();
             */
         
-            
+            $pdo = new PDO('mysql: host = localhost; dbname = php; charset = utf8', 'root', '');
+            print "접속 성공";
+            $pdo = null;
         ?>
     </body>
 </html>
