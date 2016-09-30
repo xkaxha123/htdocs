@@ -1,8 +1,15 @@
+<?php
+    $pdo = new PDO('mysql: host = localhost; dbname = php; charset = utf8', 'root', '');
+    print "접속 성공";
+    $pdo = null;
+?>
+
 <!DOCTYPE html>
 <!-- saved from url=(0027)https://shinyuna.github.io/ -->
-<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <link rel="stylesheet" href="./KCC_files/kcc.css">
-    
     <title>KCC</title>
 </head>
 <body>
@@ -66,55 +73,55 @@
                 <h5><span id="s">상세정보 입력</span> &nbsp;<span class="star">*</span>표시는 필수입력 항목입니다.</h5>
             </div>
             <div id="put">
+            <form name="form1" action="signup.php" method="post">
              <table class="table">
-                    <tbody><tr>
+                    <tbody>
+                    <tr>
                         <td>한글이름&nbsp;<span class="star">*</span></td>
-                        <td><input type="text"></td>
+                        <td><input type="text" name="kname"></td>
                     </tr>
                     <tr>
                         <td>영문이름</td>
-                        <td><input type="text" style="margin-left:12px;"></td>
+                        <td><input type="text" name="ename" style="margin-left:12px;"></td>
                     </tr>
                     <tr>
                         <td>생년월일&nbsp;<span class="star">*</span></td>
                         <td><select name="year" id="year">
-                            <option value="1">2000</option>
-                            <option value="2">2001</option>
-                            <option value="3">2002</option>
-                            <option value="4">2003</option>
-                            <option value="5">1964</option>
+                            <?php
+                                for($i = 1917; $i <= 2016; $i++){
+                                    print "<option value =".$i.">".$i."</option>";
+                                }
+                            ?>
                         </select>&nbsp;년</td>
                         <td><select name="mot" id="mot">
-                            <option value="1">1</option>
-                            <option value="2">2</option>
-                            <option value="3">3</option>
-                            <option value="4">4</option>
-                            <option value="5">5</option>
-                            <option value="6">7</option>
-                            <option value="11">11</option>
-                            <option value="28">28</option>
+                            <?php
+                                for($i = 1; $i <= 12; $i++){
+                                    print "<option value =".$i.">".$i."</option>";
+                                }
+                            ?>
                         </select>&nbsp;월</td>
                         <td><select name="day" id="day">
-                            <option value="1">11</option>
-                            <option value="2">16</option>
-                            <option value="3">28</option>
-                            </select>&nbsp;일
-                        </td>
+                            <?php
+                                for($i = 1; $i <= 31; $i++){
+                                    print "<option value =".$i.">".$i."</option>";
+                                }
+                            ?>
+                        </select>&nbsp;일</td>
                     </tr>
                     <tr>
                         <td>아이디&nbsp;<span class="star">*</span></td>
-                        <td><input type="text" style="margin-left:16px;"></td>
+                        <td><input type="text" name="id" size="20" style="margin-left:16px;"></td>
                         <td><input type="button" value="중복확인"></td>
                         <td><span class="ex">사이트내에서 표시되는 본인정보이며 저장 후 수정하실 수 없습니다.</span></td>
                     </tr>
                     <tr>
                         <td>비밀번호&nbsp;<span class="star">*</span></td>
-                        <td><input type="text"></td>
+                        <td><input type="text" name="password" size="20"></td>
                         <td><span class="ex">&nbsp; 영문 소문자,숫자 포함 4자리 이상 10자리 이하입니다.</span></td>
                     </tr>
                     <tr>
                         <td>비밀번호 확인&nbsp;<span class="star">*</span></td>
-                        <td><input type="text" style="margin-left:-37px;"></td>
+                        <td><input type="text" name="chpassword" style="margin-left:-37px;"></td>
                         <td><span class="ex">&nbsp; 비밀번호를 한번 더 입력하세요</span></td>
                     </tr>
                     <tr>
@@ -125,8 +132,8 @@
                             <option value="3">032</option>
                             <option value="4">033</option>
                         </select>&nbsp;-</td>
-                        <td><input type="text" style="width:60px;">&nbsp;-</td>
-                        <td><input type="text" style="width:60px;"></td>
+                        <td><input type="text" name="frontnum" style="width:60px;">&nbsp;-</td>
+                        <td><input type="text" name="backnum" style="width:60px;"></td>
                         <td><span class="ex">&nbsp; 예약시 휴대폰으로 문자가 발송됩니다.</span></td>
                     </tr>
                     <tr>
@@ -139,8 +146,8 @@
                             <option value="5">018</option>
                             <option value="6">019</option>
                         </select>&nbsp;-</td>
-                        <td><input type="text" style="width:60px;">&nbsp;-</td>
-                        <td><input type="text" style="width:60px;"></td>
+                        <td><input type="text" name="CPfrontnum" style="width:60px;">&nbsp;-</td>
+                        <td><input type="text" name="CPbacknum" style="width:60px;"></td>
                     </tr>
                     <tr>
                         <td id="sms">SMS 수신여부&nbsp;<span class="star">*</span></td>
@@ -154,14 +161,14 @@
                     </tr>            
                     <tr>
                         <td id="post">자택 우편번호&nbsp;<span class="star">*</span></td>
-                        <td><input type="text" style="width:40px;margin-left:-40px;">&nbsp;-</td>
-                        <td><input type="text" style="width:40px;"></td>
+                        <td><input type="text" name="frontpostnum" style="width:40px;margin-left:-40px;">&nbsp;-</td>
+                        <td><input type="text" name="backpostnum" style="width:40px;"></td>
                         <td><input type="button" value="우편번호 찾기"></td>
                     </tr>
                     <tr>
                         <td>자택주소&nbsp;<span class="star">*</span></td>
                         <td><input type="text" style="width:300px;"></td>
-                        <td><br><input type="text" style="width:300px; margin-left:131px;"></td>
+                        <td><br><input type="text" style="width:300px; margin-left:128px;"></td>
                     </tr>
                     <tr>
                         <td>DM발송처<span class="star">*</span></td>
@@ -262,6 +269,7 @@
                    <a href="https://shinyuna.github.io/#" id="back">취소</a>
                    <a href="https://shinyuna.github.io/#" id="next">다음</a>
                 </div>
+                </form>
             </div>
         </div>
         <div id="footer">

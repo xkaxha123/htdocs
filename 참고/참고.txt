@@ -1,0 +1,44 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+ <HEAD>
+  <TITLE> New Document </TITLE>
+  <META NAME="Generator" CONTENT="EditPlus">
+  <META NAME="Author" CONTENT="">
+  <META NAME="Keywords" CONTENT="">
+  <META NAME="Description" CONTENT="">
+  <script>
+   window.onload = function () {
+    join(1990,2016,'년');
+    join(1,12,'월');
+ join(1,31,'일');
+   }
+   function join(start, end,cal){
+ for(var i=start;i<=end;++i){  
+      new_op=document.createElement("OPTION");
+      new_op.text=i;
+      new_op.value=i;
+      if(cal=='년')document.frm.menu.add(new_op);
+      if(cal=='월')document.frm.menu2.add(new_op);
+   if(cal=='일')document.frm.menu3.add(new_op);
+ }
+   }
+  </script>
+ </HEAD>
+ <BODY>
+  <form name="frm" id="fr" action="" >
+ <div id="div2">
+    </div>
+ <select name="menu" id="menu">
+  <option value="">년도</option>
+ </select>
+ <select name="menu2" id="menu2">
+  <option value="">월</option>
+ </select>
+ <select name="menu3" id="menu3">
+  <option value="">일</option>
+ </select>
+  </form>
+ </BODY>
+</HTML>
+[출처] [javascript] 년.월,일 셀렉트(select)생성 (소프트웨어 놀이터) |작성자 열영
+
