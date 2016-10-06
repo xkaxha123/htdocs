@@ -1,7 +1,5 @@
 <?php
-    $pdo = new PDO('mysql: host = localhost; dbname = php; charset = utf8', 'root', '');
-    print "접속 성공";
-    $pdo = null;
+    include("kccdb.php")
 ?>
 
 <!DOCTYPE html>
@@ -10,7 +8,52 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <link rel="stylesheet" href="./KCC_files/kcc.css">
-    <title>KCC</title>
+    <title>20518정태웅</title>
+    
+    <script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
+<script>
+    function sample6_execDaumPostcode() {
+        new daum.Postcode({
+            oncomplete: function(data) {
+                // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
+
+                // 각 주소의 노출 규칙에 따라 주소를 조합한다.
+                // 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다.
+                var fullAddr = ''; // 최종 주소 변수
+                var extraAddr = ''; // 조합형 주소 변수
+
+                // 사용자가 선택한 주소 타입에 따라 해당 주소 값을 가져온다.
+                if (data.userSelectedType === 'R') { // 사용자가 도로명 주소를 선택했을 경우
+                    fullAddr = data.roadAddress;
+
+                } else { // 사용자가 지번 주소를 선택했을 경우(J)
+                    fullAddr = data.jibunAddress;
+                }
+
+                // 사용자가 선택한 주소가 도로명 타입일때 조합한다.
+                if(data.userSelectedType === 'R'){
+                    //법정동명이 있을 경우 추가한다.
+                    if(data.bname !== ''){
+                        extraAddr += data.bname;
+                    }
+                    // 건물명이 있을 경우 추가한다.
+                    if(data.buildingName !== ''){
+                        extraAddr += (extraAddr !== '' ? ', ' + data.buildingName : data.buildingName);
+                    }
+                    // 조합형주소의 유무에 따라 양쪽에 괄호를 추가하여 최종 주소를 만든다.
+                    fullAddr += (extraAddr !== '' ? ' ('+ extraAddr +')' : '');
+                }
+
+                // 우편번호와 주소 정보를 해당 필드에 넣는다.
+                document.getElementById('sample6_postcode').value = data.zonecode; //5자리 새우편번호 사용
+                document.getElementById('sample6_address').value = fullAddr;
+
+                // 커서를 상세주소 필드로 이동한다.
+                document.getElementById('sample6_address2').focus();
+            }
+        }).open();
+    }
+</script>
 </head>
 <body>
     <div id="wrap">
@@ -151,8 +194,8 @@
                     </tr>
                     <tr>
                         <td id="sms">SMS 수신여부&nbsp;<span class="star">*</span></td>
-                        <td><input type="radio"><span class="ex">&nbsp;예</span></td>
-                        <td><input type="radio"><span class="ex">&nbsp;아니오</span></td>
+                        <td><input type="radio" name="mail"><span class="ex">&nbsp;예</span></td>
+                        <td><input type="radio" name="mail"><span class="ex">&nbsp;아니오</span></td>
                         <td><span class="ex">회원공지 알림에 대한 수신여부입니다.<span></span></span></td>
                     </tr>
                     <tr>
@@ -160,21 +203,20 @@
                     <td><input type="text" style="margin-left:26px;"></td>
                     </tr>            
                     <tr>
-                        <td id="post">자택 우편번호&nbsp;<span class="star">*</span></td>
-                        <td><input type="text" name="frontpostnum" style="width:40px;margin-left:-40px;">&nbsp;-</td>
-                        <td><input type="text" name="backpostnum" style="width:40px;"></td>
-                        <td><input type="button" value="우편번호 찾기"></td>
+                        <td id="post">자택 우편번호&nbsp;<span class="star">*&nbsp;</span></td>
+                        <td><input type="text" name="home-zonecode" id="sample6_postcode" style="width:80px;margin-left:-43px;"></td>
+                        <td><input type="button"  onclick="sample6_execDaumPostcode()" value="우편번호 찾기"></td>
                     </tr>
                     <tr>
                         <td>자택주소&nbsp;<span class="star">*</span></td>
-                        <td><input type="text" style="width:300px;"></td>
-                        <td><br><input type="text" style="width:300px; margin-left:128px;"></td>
+                        <td><input type="text" name="home-address1" id="sample6_address" style="width:300px;"></td>
+                        <td><br><input type="text" name="home-address2" id="sample6_address2" style="width:300px; margin-left:128px;"><span id="guide" style="color:#999"></span></td>
                     </tr>
                     <tr>
                         <td>DM발송처<span class="star">*</span></td>
-                        <td><input type="radio"></td>
+                        <td><input type="radio" name="DMaddress"></td>
                         <td><span class="ex">자택</span></td>
-                        <td><input type="radio"></td>
+                        <td><input type="radio" name="DMaddress"></td>
                         <td><span class="ex">직장</span></td>
                     </tr>
                 </tbody></table>
@@ -184,26 +226,25 @@
                     <table class="table2">
                         <tbody><tr>
                             <td>직장명&nbsp;<span class="star">*</span></td>
-                            <td><input type="text" style="margin-left:14px;"></td>
+                            <td><input type="text" name="workplace" style="margin-left:14px;"></td>
                         </tr>
                         <tr>
                             <td>직종</td>
-                            <td><input type="text" style="margin-left:42px;"></td>
+                            <td><input type="text" name="jobname" style="margin-left:42px;"></td>
                         </tr>
                         <tr>
                             <td>직위&nbsp;<span class="star">*</span></td>
-                            <td><input type="text" style="margin-left:30px;"></td>
+                            <td><input type="text" name="position" style="margin-left:30px;"></td>
                         </tr>
                         <tr>
-                            <td id="workpost">직장 우편번호<span class="star">*</span></td>
-                            <td><input type="text" style="width:40px;">&nbsp;-</td>
-                            <td><input type="text" style="width:40px;"></td>
-                            <td><input type="button" value="우편번호 찾기"></td>
+                            <td id="workpost">직장 우편번호<span class="star">*&nbsp;</span></td>
+                            <td><input type="text" name="workplace-zonecode" id="workplace_zonecode" style="width:80px;"></td>
+                            <td><input type="button" onclick="openAddr()" value="우편번호 찾기"></td>
                         </tr>
                         <tr>
                             <td>직장주소<span class="star">*</span></td>
-                            <td><input type="text" style="width:300px; margin-left:4px;"></td>
-                            <td><br><input type="text" style="width:300px; margin-left:129px;"></td>
+                            <td><input type="text" name="workplace-address1" id="workplace_address1" style="width:300px; margin-left:4px;"></td>
+                            <td><br><input type="text" name="workplace-address2" id="workplace_address2" style="width:300px; margin-left:127px;"></td>
                         </tr>
                         <tr>
                             <td id="number">직장전화번호<span class="star">*</span></td>
@@ -215,8 +256,8 @@
                             <option value="5">018</option>
                             <option value="6">019</option>
                         </select>&nbsp;-</td>
-                        <td><input type="text" style="width:60px;">&nbsp;-</td>
-                        <td><input type="text" style="width:60px;"></td>
+                        <td><input type="text" name="WPfrontphonenum" style="width:60px;">&nbsp;-</td>
+                        <td><input type="text" name="WPbackphonenum" style="width:60px;"></td>
                         </tr>
                         <tr><td id="fax">팩스번호</td>
                             <td><select name="phone">
@@ -227,38 +268,37 @@
                             <option value="5">018</option>
                             <option value="6">019</option>
                         </select>&nbsp;-</td>
-                        <td><input type="text" style="width:60px;">&nbsp;-</td>
-                        <td><input type="text" style="width:60px;"></td>
+                        <td><input type="text" name="WPfrontfaxnum" style="width:60px;">&nbsp;-</td>
+                        <td><input type="text" name="WPbackfaxnum" style="width:60px;"></td>
                         </tr><tr>
                             <td id="merry">결혼여부</td>
-                            <td><input type="radio"></td>
+                            <td><input type="radio" name="marrycheck"></td>
                             <td><span class="ex">미혼</span></td>
-                            <td><input type="radio"></td>
+                            <td><input type="radio" name="marrycheck"></td>
                             <td><span class="ex">기혼</span></td>
                         </tr>
                         <tr>
                             <td id="mdate">결혼기념일</td>
                         <td><select name="year" id="year">
-                            <option value="1">2000</option>
-                            <option value="2">2001</option>
-                            <option value="3">2002</option>
-                            <option value="4">2003</option>
-                            <option value="5">1964</option>
+                            <?php
+                                for($i = 1917; $i <= 2016; $i++){
+                                    print "<option value =".$i.">".$i."</option>";
+                                }
+                            ?>
                         </select>&nbsp;년</td>
                         <td><select name="mot" id="mot">
-                            <option value="1">1</option>
-                            <option value="2">2</option>
-                            <option value="3">3</option>
-                            <option value="4">4</option>
-                            <option value="5">5</option>
-                            <option value="6">7</option>
-                            <option value="11">11</option>
-                            <option value="28">28</option>
+                            <?php
+                                for($i = 1; $i <= 12; $i++){
+                                    print "<option value =".$i.">".$i."</option>";
+                                }
+                            ?>
                         </select>&nbsp;월</td>
                         <td><select name="day" id="day">
-                            <option value="1">11</option>
-                            <option value="2">16</option>
-                            <option value="3">28</option>
+                            <?php
+                                for($i = 1; $i <= 31; $i++){
+                                    print "<option value =".$i.">".$i."</option>";
+                                }
+                            ?>
                             </select>&nbsp;일
                         </td>
                         </tr>
@@ -266,8 +306,8 @@
                 </div>
                 <div id="line3"></div>
                 <div id="btn">
-                   <a href="https://shinyuna.github.io/#" id="back">취소</a>
-                   <a href="https://shinyuna.github.io/#" id="next">다음</a>
+                   <a href="#" id="back">취소</a>
+                   <a href="#" id="next">다음</a>
                 </div>
                 </form>
             </div>
