@@ -1,6 +1,4 @@
-<?php
-    include("kccdb.php")
-?>
+<?php include("kccdb.php") ?>
 
 <!DOCTYPE html>
 <!-- saved from url=(0027)https://shinyuna.github.io/ -->

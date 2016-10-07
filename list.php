@@ -2,7 +2,7 @@
     $search = '%'.$_POST['search'].'%';
      print $search;
     if(isset($search)){
-        $sql = 'select * from member where last_name like :last_name or first_name like :first_name';
+        $sql = 'select * from user where last_name like :last_name or first_name like :first_name';
         $stmh = $pdo -> prepare($sql);
         $stmh -> bindValue(':last_name', $search, PDO::PARAM_STR);
         $stmh -> bindValue(':first_name', $search, PDO::PARAM_STR);

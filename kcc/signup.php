@@ -1,4 +1,4 @@
-<?php
+<?php include("kccdb.php");
     $kname                  = $_POST["kname"];
     $ename                  = $_POST["ename"];
 
@@ -48,4 +48,10 @@
     $marry_day              = $_POST["marry_day"];
 
     print "회원정보:<br>이름: ".$kname."<br>영문이름:".$ename;
+    print "<br>당신의 IP: ".$_SERVER["REMOTE_ADDR"];
+    $sql = "insert into user";
+    $stmh = $pdo -> prepare($sql);
+    $stmh -> bindValue(':last_name', $search, PDO::PARAM_STR);
+    $stmh -> bindValue(':first_name', $search, PDO::PARAM_STR);
+    $stmh -> execute();
 ?>
