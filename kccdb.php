@@ -1,7 +1,8 @@
 <?php
-    try{
-        $pdo = new PDO('mysql:host = localhost; dbname = user; charset = utf-8', 'root', '');
+try{
+        $pdo = new PDO("mysql:host=127.0.0.1;dbname=user;charset=utf8", "root", "");
         $pdo -> setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
+        $pdo -> setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         print "접속성공";
     }
     catch(PDOException $Exception){
