@@ -116,7 +116,7 @@
             </div>
             <div id="put">
             <form name="form1" action="signup.php" method="post">
-             <table class="table">
+                <table class="table">
                     <tbody>
                     <tr>
                         <td>한글이름&nbsp;<span class="star">*</span></td>
@@ -169,10 +169,10 @@
                     <tr>
                         <td id="call">전화번호</td>
                         <td><select name="home_phone">
-                            <option value="1">02</option>
-                            <option value="2">031</option>
-                            <option value="3">032</option>
-                            <option value="4">033</option>
+                            <option value="02">02</option>
+                            <option value="031">031</option>
+                            <option value="032">032</option>
+                            <option value="033">033</option>
                         </select>&nbsp;-</td>
                         <td><input type="text" name="front_num" style="width:60px;">&nbsp;-</td>
                         <td><input type="text" name="back_num" style="width:60px;"></td>
@@ -181,25 +181,25 @@
                     <tr>
                         <td id="cellphone">휴대폰번호&nbsp;<span class="star">*</span></td>
                          <td><select name="cellphone">
-                            <option value="1">010</option>
-                            <option value="2">011</option>
-                            <option value="3">016</option>
-                            <option value="4">017</option>
-                            <option value="5">018</option>
-                            <option value="6">019</option>
+                            <option value="010">010</option>
+                            <option value="011">011</option>
+                            <option value="016">016</option>
+                            <option value="017">017</option>
+                            <option value="018">018</option>
+                            <option value="019">019</option>
                         </select>&nbsp;-</td>
                         <td><input type="text" name="cellphone_front_num" style="width:60px;">&nbsp;-</td>
                         <td><input type="text" name="cellphone_back_num" style="width:60px;"></td>
                     </tr>
                     <tr>
                         <td id="sms">SMS 수신여부&nbsp;<span class="star">*</span></td>
-                        <td><input type="radio" name="sms_receive"><span class="ex">&nbsp;예</span></td>
-                        <td><input type="radio" name="sms_receive"><span class="ex">&nbsp;아니오</span></td>
+                        <td><input type="radio" name="sms_receive" value="예"><span class="ex">&nbsp;예</span></td>
+                        <td><input type="radio" name="sms_receive" value="아니오"><span class="ex">&nbsp;아니오</span></td>
                         <td><span class="ex">회원공지 알림에 대한 수신여부입니다.<span></span></span></td>
                     </tr>
                     <tr>
                     <td>E-MAIL</td>
-                    <td><input type="text" name="email" style="margin-left:26px;"></td>
+                    <td><input type="text" name="email_front" style="width:80px; margin-left:26px"><span>&nbsp;@&nbsp;</span><input type="text" name="email_back" style="width:80px"></td>
                     </tr>            
                     <tr>
                         <td id="post">자택 우편번호&nbsp;<span class="star">*&nbsp;</span></td>
@@ -213,11 +213,10 @@
                     </tr>
                     <tr>
                         <td>DM발송처<span class="star">*</span></td>
-                        <td><input type="radio" name="dm_address"></td><td><span class="ex">자택</span></td>
-                        <td><input type="radio" name="dm_address"></td><td><span class="ex">직장</span></td>
+                        <td><input type="radio" name="dm_address" value="자택"><span class="ex">자택</span></td>
+                        <td><input type="radio" name="dm_address" value="직장"><span class="ex">직장</span></td>
                     </tr>
                 </tbody></table>
-                </div>
                 <div id="line2"></div>
                 <div id="put2">
                     <table class="table2">
@@ -269,10 +268,8 @@
                         <td><input type="text" name="workplace_fax_back" style="width:60px;"></td>
                         </tr><tr>
                             <td id="merry">결혼여부</td>
-                            <td><input type="radio" name="marry_check"></td>
-                            <td><span class="ex">미혼</span></td>
-                            <td><input type="radio" name="marry_check"></td>
-                            <td><span class="ex">기혼</span></td>
+                            <td><input type="radio" name="marry_check" value="미혼"><span class="ex">미혼</span></td>
+                            <td><input type="radio" name="marry_check" value="기혼"><span class="ex">기혼</span></td>
                         </tr>
                         <tr>
                             <td id="mdate">결혼기념일</td>
