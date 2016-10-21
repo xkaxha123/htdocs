@@ -245,24 +245,24 @@
                         <tr>
                             <td id="number">직장전화번호<span class="star">*</span></td>
                             <td><select name="workplace_phone">
-                            <option value="1">010</option>
-                            <option value="2">011</option>
-                            <option value="3">016</option>
-                            <option value="4">017</option>
-                            <option value="5">018</option>
-                            <option value="6">019</option>
+                            <option value="010">010</option>
+                            <option value="011">011</option>
+                            <option value="016">016</option>
+                            <option value="017">017</option>
+                            <option value="018">018</option>
+                            <option value="019">019</option>
                         </select>&nbsp;-</td>
                         <td><input type="text" name="workplace_front_num" style="width:60px;">&nbsp;-</td>
                         <td><input type="text" name="workplace_back_num" style="width:60px;"></td>
                         </tr>
                         <tr><td id="fax">팩스번호</td>
                             <td><select name="workplace_fax">
-                            <option value="1">010</option>
-                            <option value="2">011</option>
-                            <option value="3">016</option>
-                            <option value="4">017</option>
-                            <option value="5">018</option>
-                            <option value="6">019</option>
+                            <option value="010">010</option>
+                            <option value="011">011</option>
+                            <option value="016">016</option>
+                            <option value="017">017</option>
+                            <option value="018">018</option>
+                            <option value="019">019</option>
                         </select>&nbsp;-</td>
                         <td><input type="text" name="workplace_fax_front" style="width:60px;">&nbsp;-</td>
                         <td><input type="text" name="workplace_fax_back" style="width:60px;"></td>

@@ -3,7 +3,7 @@
 ?>
 <!doctype html>
 <html lang = "en">
-    <<head>
+    <head>
         <meta charset = "utf-8">
     <title>엉덩이 연구 논문</title>
     <style type="text/css">

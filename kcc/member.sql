@@ -3,9 +3,9 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- 생성 시간: 16-10-20 02:42
--- 서버 버전: 10.1.13-MariaDB
--- PHP 버전: 5.6.20
+-- 생성 시간: 16-10-21 04:16
+-- 서버 버전: 10.1.16-MariaDB
+-- PHP 버전: 5.6.24
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -49,7 +49,7 @@ CREATE TABLE `member` (
   `home_address` varchar(50) NOT NULL,
   `home_address2` varchar(50) NOT NULL,
   `workplace` varchar(30) NOT NULL,
-  `jobname` varchar(30) NOT NULL,
+  `job_name` varchar(30) NOT NULL,
   `position` varchar(30) NOT NULL,
   `workplace_zonecode` int(6) NOT NULL,
   `workplace_address` varchar(50) NOT NULL,
@@ -63,9 +63,18 @@ CREATE TABLE `member` (
   `marry_check` varchar(2) NOT NULL,
   `marry_year` int(4) NOT NULL,
   `marry_month` int(2) NOT NULL,
-  `marry_day` int(2) NOT NULL,
-  `address` varchar(200) NOT NULL
+  `marry_day` int(2) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- 테이블의 덤프 데이터 `member`
+--
+
+INSERT INTO `member` (`idx`, `kname`, `ename`, `birth_year`, `birth_month`, `birth_day`, `id`, `pw`, `check_pw`, `home_phone`, `home_front_num`, `home_back_num`, `cellphone`, `cellphone_front_num`, `cellphone_back_num`, `sms_receive`, `dm_address`, `email`, `home_zonecode`, `home_address`, `home_address2`, `workplace`, `job_name`, `position`, `workplace_zonecode`, `workplace_address`, `workplace_address2`, `workplace_phone`, `workplace_front_num`, `workplace_back_num`, `workplace_fax`, `workplace_fax_front`, `workplace_fax_back`, `marry_check`, `marry_year`, `marry_month`, `marry_day`) VALUES
+(1, '123', '123', 0, 0, 0, '', '', '', 0, 0, 0, 0, 0, 0, '', '', '', 0, '', '', '', '', '', 0, '', '', 0, 0, 0, 0, 0, 0, '', 0, 0, 0),
+(2, '123', '123', 0, 0, 0, '', '', '', 0, 0, 0, 0, 0, 0, '', '', '', 0, '', '', '', '', '', 0, '', '', 0, 0, 0, 0, 0, 0, '', 0, 0, 0),
+(3, '123', '123', 1917, 1, 1, '123', '123', '123', 123, 123, 123, 123, 123, 123, '123', '12', '123', 123, '123', '123', '123', '123', '123', 123, '123', '123', 123, 123, 123, 123, 123, 123, '12', 123, 123, 123),
+(4, '123', '123', 1917, 1, 1, '123', '123', '123', 2, 123, 123, 10, 123, 123, '예', '자택', '123@123', 123, '123', '123', '123', '123', '123', 141414, '12312412', '124124124', 1, 124, 124124, 1, 124124, 124, '미혼', 1917, 1, 1);
 
 --
 -- 덤프된 테이블의 인덱스
@@ -85,7 +94,7 @@ ALTER TABLE `member`
 -- 테이블의 AUTO_INCREMENT `member`
 --
 ALTER TABLE `member`
-  MODIFY `idx` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `idx` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
