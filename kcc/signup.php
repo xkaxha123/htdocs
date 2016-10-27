@@ -49,8 +49,6 @@
     $stmh -> bindValue(":sms_receive", $sms_receive);
     $stmh -> bindValue(":dm_address", $dm_address);
     $stmh -> bindValue(":marry_check", $marry_check);
-
-    $stmh -> bindValue(":email", $email);
     
     $stmh -> bindValue(":workplace", $workplace);
     $stmh -> bindValue(":job_name", $job_name);
@@ -78,7 +76,7 @@
     print "<br>SMS수신여부: ".$sms_receive;
     print "<br>DM발송처: ".$dm_address;
     print "<br>결혼여부: ".$marry_check;
-    print "<br>Email: ".$email_front."@".$email_back;
+    print "<br>Email: ".$email;
     print "<br>당신의 IP: ".$_SERVER["REMOTE_ADDR"];
 
 ?>

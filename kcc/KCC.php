@@ -26,7 +26,7 @@
                     if(data.buildingName !== ''){extraAddr += (extraAddr !== '' ? ', ' + data.buildingName : data.buildingName);}
                     fullAddr += (extraAddr !== '' ? ' ('+ extraAddr +')' : '');
                 }
-                document.getElementById("home_zonecode").value = data.zonecode; //5자리 새우편번호 사용
+                document.getElementById("home_zonecode").value = data.zonecode;
                 document.getElementById("home_address").value = fullAddr;
                 document.getElementById("home_address2").focus();
             }
@@ -46,7 +46,7 @@
                     if(data.buildingName !== ''){extraAddr += (extraAddr !== '' ? ', ' + data.buildingName : data.buildingName);}
                     fullAddr += (extraAddr !== '' ? ' ('+ extraAddr +')' : '');
                 }
-                document.getElementById("workplace_zonecode").value = data.zonecode; //5자리 새우편번호 사용
+                document.getElementById("workplace_zonecode").value = data.zonecode;
                 document.getElementById("workplace_address").value = fullAddr;
                 document.getElementById("workplace_address2").focus();
             }
