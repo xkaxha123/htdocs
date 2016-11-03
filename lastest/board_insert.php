@@ -1,5 +1,7 @@
 <?php
     require_once 'inc/header.php';
+
+  
 ?>
 <!-- //skip nav -->
 <div id="wrap" class="sub_bg">
@@ -112,7 +114,7 @@
 						<strong>회원가입</strong>
 					</p>
                     <div>
-                        <form name="writeform" action="view.php" method="post"><br>
+                        <form name="writeform" action="action.php" method="post"><br>
                             <strong>제목 </strong><input type ="text" name ="title"><br><br>
                             <strong>내용 </strong><textarea name ="content" cols ="100" rows ="10"></textarea><br>
                             <input type ="submit" value="저장">

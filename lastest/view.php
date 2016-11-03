@@ -1,19 +1,14 @@
 <?php
 require_once 'inc/header.php';
 require_once 'inc/dbcon.php';
-    $title = $_POST["title"];
-    $content = $_POST["content"];
-    $now = date("Y-m-d H:i:s");
-    $count = 0;
+    $idx = $_GET['idx'];
 
-    $sql = "INSERT INTO notice (title, content, date, count) VALUES (:title, :content, :now, :count)";
-    $stmh = $pdo -> prepare($sql);
-    $stmh -> bindValue(":title", $title);
-    $stmh -> bindValue(":content", $content);
-    $stmh -> bindValue(":now", $now);
-    $stmh -> bindValue(":count", $count);
-    $stmh -> execute();
-    
+    $sql = "SELECT * FROM notice WHERE idx = :idx";
+    $stmt = $pdo -> prepare($sql);
+    $stmt -> bindValue(":idx",$idx);
+    $stmt -> execute();
+    $result = $stmt -> fetch();
+
 ?>
 <!-- //skip nav -->
 <div id="wrap" class="sub_bg">
@@ -118,7 +113,7 @@ require_once 'inc/dbcon.php';
 					</ul> 
 				</div>		
 				<div class="right_con">	
-                                    <p class="pg_nav">	
+                    <p class="pg_nav">	
 						<a href="#">홈</a>
 						<span>&gt;</span>
 						<a href="#">회원서비스</a>						
@@ -126,19 +121,13 @@ require_once 'inc/dbcon.php';
 						<strong>회원가입</strong>
 					</p>
 					<div class="join_wrap">
-						<h3><?php
-                                print '제목:'.$title;
-                                print '작성일:'.$now;
-                                //print '조회수:'.$count;
-                            ?></h3>
+
                                     <table id="view">
-                                        <tr class="view_tr">
-                                            <td><?php print $content; ?></td>
-                                        </tr>
+                                        <?php $result['title']; ?>
                                     </table>
-                                        <p><a href="/update.php">수정</a></p>
-                                        <p><a href="/delete.php">삭제</a></p>  
-                                        <p><a href="sub1.php">목록</a></p>
+                                        <p style="float:right"><a href="/update.php">수정</a></p>
+                                        <p style="float:right"><a href="/delete.php">삭제</a></p>  
+                                        <p style="float:right"><a href="sub1.php">목록</a></p>
 			         </div>	
 		</div>	
 	</div>

@@ -226,7 +226,7 @@ address{margin-top:8px;color:#232426;letter-spacing:-0.6px}
 /*sub*/
 .sub_con{position:relative;width:100%}
 .left_con{float:left;width:161px;border-top:3px solid #e60012}
-.right_con{margin-left:25%;border-top:3px solid #000}
+.right_con{margin-left:25%;border-top:5px solid #000}
 /*sub left content*/
 .lnb_title{position:absolute;top:-50px;left:0;width:162px;height:34px;background-position:0 0}
 .lnb li{border-bottom:1px solid #b7b7b7}

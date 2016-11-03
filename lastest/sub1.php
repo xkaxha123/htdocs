@@ -1,7 +1,14 @@
 <?php
     require_once 'inc/header.php';
     require_once 'inc/dbcon.php';
-    $result = 
+
+
+    $sql = "SELECT * FROM notice";
+    $stmt = $pdo -> prepare($sql);
+    $stmt -> execute();
+    $result = $stmt -> fetchAll();
+
+    
 ?>
 <!-- //skip nav -->
 <div id="wrap" class="sub_bg">
@@ -121,7 +128,7 @@
 					<colgroup>
 					<col style="width:68px">
 					<col>
-					<col style="width:137px">
+					<col style="width:160px">
 					<col style="width:82px">
 					</colgroup>
 					<thead>
@@ -132,37 +139,21 @@
 								<th scope="col"><span class="in">조회수</span></th>
 							</tr>
 					</thead>
-					<tbody>
-                        <tr>
-							<td>
-								<div class="in">
-                                    <a href="view.php?idx"
-                                </div>
-							</td>
-							<td class="con">
-								<div class="in">
-                                    <a href="/view.php">
-                                        
-                                    </a>
-                                </div>
-							</td>
-							<td>
-								<div class="in">
-									<div class="in">
-                                    
-                                    </div>
-								</div>
-							</td>
-							<td>
-								<div class="in">
-									<div class="in">
-                                    
-                                    </div>
-								</div>
-							</td>
-                                                                                                     </tr>
-                		
-					</tbody>
+                        <tbody>
+                            <?php
+                                foreach($result as $row)
+                                {
+                            ?>
+                            <tr>
+                                <td><div class="in"><a href="view.php"><?= $row['idx'] ?></a></div></td>
+                                <td class="con"><div class="in"><a href="view.php?idx=<?= $row['idx'] ?>"><?= $row['title'] ?></a></div></td>
+                                <td><div class="in"><div class="in"><?= $row['date'] ?></div></div></td>
+                                <td><div class="in"><div class="in"><?= $row['count'] ?></div></div></td>
+                            </tr>
+                            <?php
+                                }
+                            ?>
+                        </tbody>
 					</table>
 
 					</div>								
