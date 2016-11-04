@@ -14,4 +14,6 @@
     {
         echo "<script>alert('용량초과')</script>";
     }
+
+    $sql = "INSERT INTO dbname "
 ?>

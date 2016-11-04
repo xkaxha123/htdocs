@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<!-- saved from url=(0034)http://10.56.150.212/kcc/sub3.php# -->
+<html lang="ko"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0">
+<title>20522 최지혁</title>
+<link rel="stylesheet" type="text/css" href="./20522 최지혁_files/kcc_style.css">
+<script type="text/javascript" src="./20522 최지혁_files/jquery-1.8.0.min.js.다운로드"></script>
+<script type="text/javascript" src="./20522 최지혁_files/common.js.다운로드"></script>
+<script src="./20522 최지혁_files/jquery.selectric.min.js.다운로드"></script>
+<link rel="stylesheet" id="theme" href="./20522 최지혁_files/selectric.css">
+<script src="./20522 최지혁_files/validate.js.다운로드"></script>
+<script src="./20522 최지혁_files/postcode.v2.js.다운로드"></script><script charset="UTF-8" type="text/javascript" src="./20522 최지혁_files/161102.js.다운로드"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            vailded = false;
+            pass_vailded = false;
+        });
+        function execDaumPostcode() {
+            new daum.Postcode({
+                oncomplete: function(data) {
+                    var fullAddr = ''; // 최종 주소 변수
+                    var extraAddr = ''; // 조합형 주소 변수
+
+                    // 사용자가 선택한 주소 타입에 따라 해당 주소 값을 가져온다.
+                    if (data.userSelectedType === 'R') { // 사용자가 도로명 주소를 선택했을 경우
+                        fullAddr = data.roadAddress;
+
+                    } else { // 사용자가 지번 주소를 선택했을 경우(J)
+                        fullAddr = data.jibunAddress;
+                    }
+
+                    // 사용자가 선택한 주소가 도로명 타입일때 조합한다.
+                    if(data.userSelectedType === 'R'){
+                        //법정동명이 있을 경우 추가한다.
+                        if(data.bname !== ''){
+                            extraAddr += data.bname;
+                        }
+                        // 건물명이 있을 경우 추가한다.
+                        if(data.buildingName !== ''){
+                            extraAddr += (extraAddr !== '' ? ', ' + data.buildingName : data.buildingName);
+                        }
+                        // 조합형주소의 유무에 따라 양쪽에 괄호를 추가하여 최종 주소를 만든다.
+                        fullAddr += (extraAddr !== '' ? ' ('+ extraAddr +')' : '');
+                    }
+
+                    // 우편번호와 주소 정보를 해당 필드에 넣는다.
+                    document.getElementById('h_postcode').value = data.zonecode; //5자리 새우편번호 사용
+                    document.getElementById('home_addr1').value = fullAddr;
+
+                    // 커서를 상세주소 필드로 이동한다.
+                    document.getElementById('home_addr2').focus();
+                }
+            }).open();
+        }
+        function execDaumPostcode_W() {
+            new daum.Postcode({
+                oncomplete: function(data) {
+                    var fullAddr = ''; // 최종 주소 변수
+                    var extraAddr = ''; // 조합형 주소 변수
+
+                    // 사용자가 선택한 주소 타입에 따라 해당 주소 값을 가져온다.
+                    if (data.userSelectedType === 'R') { // 사용자가 도로명 주소를 선택했을 경우
+                        fullAddr = data.roadAddress;
+
+                    } else { // 사용자가 지번 주소를 선택했을 경우(J)
+                        fullAddr = data.jibunAddress;
+                    }
+
+                    // 사용자가 선택한 주소가 도로명 타입일때 조합한다.
+                    if(data.userSelectedType === 'R'){
+                        //법정동명이 있을 경우 추가한다.
+                        if(data.bname !== ''){
+                            extraAddr += data.bname;
+                        }
+                        // 건물명이 있을 경우 추가한다.
+                        if(data.buildingName !== ''){
+                            extraAddr += (extraAddr !== '' ? ', ' + data.buildingName : data.buildingName);
+                        }
+                        // 조합형주소의 유무에 따라 양쪽에 괄호를 추가하여 최종 주소를 만든다.
+                        fullAddr += (extraAddr !== '' ? ' ('+ extraAddr +')' : '');
+                    }
+
+                    // 우편번호와 주소 정보를 해당 필드에 넣는다.
+                    document.getElementById('o_postcode').value = data.zonecode; //5자리 새우편번호 사용
+                    document.getElementById('office_addr1').value = fullAddr;
+
+                    // 커서를 상세주소 필드로 이동한다.
+                    document.getElementById('office_addr2').focus();
+                }
+            }).open();
+        }
+        function vaildID() {
+            var ID = $('#userid').val();
+            var pattern = /^\w{4,20}$/;
+            if (!pattern.test(ID, pattern)) {
+                vailded = false;
+                $("#idVaild").removeClass('vaildHidden');
+                $(".txtVaild").text("아이디는 영문대,소문자, 숫자, 언더바(_) 로 4~20자리로 입력해주세요.");
+                $(".txtVaild").css("color","#e60012");
+            } else {
+                request = $.ajax({
+                    type:"post",
+                    url:"vaildid.php",
+                    data : {'id': ID},
+                    dataType:'html',
+                    timeout:2000});
+                request.done(function (data) {
+                    $("#idVaild").removeClass('vaildHidden');
+                    if (data >= 1) {
+                        vailded = false;
+                        $(".txtVaild").text("이미 사용중인 아이디입니다.");
+                        $(".txtVaild").css("color","#e60012");
+                    } else {
+                        vailded = true;
+                        $(".txtVaild").text("사용 가능한 아이디입니다.");
+                        $(".txtVaild").css("color","#666");
+                    }
+                });
+            }
+            if (!ID) { 
+                $("#idVaild").addClass('vaildHidden');
+            }
+        }
+        function vaildEmail() {
+            var email = $('#email').val();
+            var pattern = /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;  //이메일 정규식
+            
+            $("#emailVaild").removeClass('vaildHidden');
+            if (!pattern.test(email, pattern)) {
+                email_vailded = false;
+                $(".txtMailVaild").text("이메일 형식이 올바르지 않습니다.");
+                $(".txtMailVaild").css("color","#e60012");
+            } else {
+                email_vailded = true;
+                $(".txtMailVaild").text("올바른 이메일 형식입니다.");
+                $(".txtMailVaild").css("color","#666");
+            }
+             if (!email) { 
+                $("#emailVaild").addClass('vaildHidden');
+            }
+        }
+        function vaildPass() {
+            var pass = $('#password').val();
+            var pass_c = $("#password_confirm").val();
+            $("#passVaild").removeClass('vaildHidden');
+            if (pass === pass_c) {
+                pass_vailded = true;
+                $(".txtPassVaild").text("입력한 비밀번호가 일치합니다.");
+                $(".txtPassVaild").css("color","#666");
+            } else {
+                pass_vailded = false;
+                $(".txtPassVaild").text("입력한 비밀번호가 일치하지 않습니다.");
+                $(".txtPassVaild").css("color","#e60012");
+            }
+            
+            if (!pass_c || !pass) { 
+                $("#passVaild").addClass('vaildHidden');
+            }
+        }
+        function validForm() {
+            if (vailded === true && $("#userid").val && $("#korName").val && $("#birthYear").val && $("#birthMonth").val && $("#birthDay").val && 
+                $("#userid").val && $("#password").val && $("#password_confirm").val && pass_vailded === true && $("#cell_g").val &&
+                $("#cell_m").val && $("#cell_e").val && $("#sms").val && $("#h_postcode").val && $("#home_addr1").val && $("#home_addr2").val &&
+                $("#dm").val && $("#office_name").val && $("position").val && $("#o_postcode").val && $("#office_addr1").val && $("#office_addr2").val ) {
+                return true;
+            } else {
+                alert ("잘못 입력하였거나, 입력하지 않은 항목이 있습니다.");
+                return false;
+            }
+        }
+    </script>   
+
+</head><body>
+<!-- skip nav -->
+<ul id="skip">
+    <li><a href="http://10.56.150.212/kcc/sub3.php#site_menu" tabindex="0">주메뉴 바로가기</a></li>
+    <li><a href="http://10.56.150.212/kcc/sub3.php#content">본문 바로가기</a></li>
+</ul>
+<!-- //skip nav -->
+<div id="wrap" class="sub_bg">
+	<!-- header -->	
+    <div id="header">	
+            <h1 class="logo">
+                <a href="http://10.56.150.212/kcc/index.php" class="sp_com kcc">
+                    <strong class="blind">KCC 금강컨트리클럽</strong>
+                </a>
+            </h1>			
+            <div id="site_gnb">	
+                <ul class="gnb_menu">
+                <li><a href="http://10.56.150.212/kcc/sub3.php#">로그인</a></li>
+                <li><a href="http://10.56.150.212/kcc/sub3.php">회원가입</a></li>
+                <li><a href="http://10.56.150.212/kcc/sub3.php#">사이트맵</a></li>
+                </ul>
+                <a class="m_gnb_ico"></a>
+            </div>
+            <div id="site_menu">
+                    <h2>
+                        <a class="m_menu_ico"><span class="blind">사이트메뉴</span></a>
+                    </h2>
+                    <!--해당메뉴 li class에 selected 추가-->
+                    <div class="menu_lst_wrap">
+                            <ul class="site_menu_lst">
+                                    <li class="menu1">
+                                        <a href="http://10.56.150.212/kcc/sub3.php#" class="sp_com site_menu1">Introduction 클럽소개</a>
+                                        <ul class="site_sub_menu" style="display: none;">
+                                        <li><a href="http://10.56.150.212/kcc/sub3.php#" class="sp_com site_menu1_1">클럽소개</a></li>
+                                        <li><a href="http://10.56.150.212/kcc/sub3.php#" class="sp_com site_menu1_2">연혁</a></li>
+                                        <li><a href="http://10.56.150.212/kcc/sub3.php#" class="sp_com site_menu1_3">이용안내</a></li>
+                                        <li><a href="http://10.56.150.212/kcc/sub3.php#" class="sp_com site_menu1_4">관계사 소개</a></li>
+                                        <li><a href="http://10.56.150.212/kcc/sub3.php#" class="sp_com site_menu1_5">오시는 길</a></li>
+                                        <li><a href="http://10.56.150.212/kcc/sub3.php#" class="sp_com site_menu1_6">CONTACT US</a></li>
+                                        </ul>
+                                    </li>
+                                    <li class="menu2">
+                                        <a href="http://10.56.150.212/kcc/sub3.php#" class="sp_com site_menu2">RESERVATION 예약정보</a>
+                                        <ul class="site_sub_menu" style="display: none;">
+                                        <li><a href="http://10.56.150.212/kcc/sub3.php#" class="sp_com site_menu2_1">예약관리</a></li>
+                                        <li><a href="http://10.56.150.212/kcc/sub3.php#" class="sp_com site_menu2_2">조인관리</a></li>
+                                        <li><a href="http://10.56.150.212/kcc/sub3.php#" class="sp_com site_menu2_3">이용내역</a></li>
+                                        <li><a href="http://10.56.150.212/kcc/sub3.php#" class="sp_com site_menu2_4">위약정보</a></li>
+                                        </ul>
+                                    </li>
+                                    <li class="menu3">
+                                        <a href="http://10.56.150.212/kcc/sub3.php#" class="sp_com site_menu3">COURCE 코스안내</a>
+                                        <ul class="site_sub_menu" style="display: none;">
+                                        <li><a href="http://10.56.150.212/kcc/sub3.php#" class="sp_com site_menu3_1">코스소개</a></li>
+                                        <li><a href="http://10.56.150.212/kcc/sub3.php#" class="sp_com site_menu3_2">서코스</a></li>
+                                        <li><a href="http://10.56.150.212/kcc/sub3.php#" class="sp_com site_menu3_3">동코스</a></li>
+                                        <li><a href="http://10.56.150.212/kcc/sub3.php#" class="sp_com site_menu3_4">남코스</a></li>
+                                        <li><a href="http://10.56.150.212/kcc/sub3.php#" class="sp_com site_menu3_5">코스 갤러리</a></li>
+                                        </ul>
+                                    </li>
+                                    <li class="menu4">
+                                        <a href="http://10.56.150.212/kcc/sub3.php#" class="sp_com site_menu4">FACILITIES 시설안내</a>
+                                        <ul class="site_sub_menu" style="display: none;">
+                                        <li><a href="http://10.56.150.212/kcc/sub3.php#" class="sp_com site_menu4_1">클럽하우스</a></li>
+                                        <li><a href="http://10.56.150.212/kcc/sub3.php#" class="sp_com site_menu4_2">특선메뉴</a></li>
+                                        <li><a href="http://10.56.150.212/kcc/sub3.php#" class="sp_com site_menu4_3">그늘집</a></li>
+                                        <li><a href="http://10.56.150.212/kcc/sub3.php#" class="sp_com site_menu4_4">락커룸</a></li>
+                                        <li><a href="http://10.56.150.212/kcc/sub3.php#" class="sp_com site_menu4_5">프로샵</a></li>
+                                        </ul>
+                                    </li>
+                                    <li class="menu5">
+                                        <a href="http://10.56.150.212/kcc/sub3.php#" class="sp_com site_menu5">COMMUNITY 커뮤니티</a>
+                                        <ul class="site_sub_menu" style="display: none;">
+                                        <li><a href="http://10.56.150.212/kcc/sub3.php#" class="sp_com site_menu5_1">공지사항</a></li>
+                                        <li><a href="http://10.56.150.212/kcc/sub3.php#" class="sp_com site_menu5_2">자료실</a></li>
+                                        <li><a href="http://10.56.150.212/kcc/sub3.php#" class="sp_com site_menu5_3">Joinroom</a></li>
+                                        </ul>
+                                    </li>
+                            </ul>
+                        <div class="close_box close_box2">
+                            <a href="http://10.56.150.212/kcc/sub3.php#" class="btn_close"><span class="blind">메뉴 닫기</span></a>
+                        </div>
+                    </div>
+            </div>
+    </div>
+    <!-- //header -->
+    <hr>
+    <!-- container -->
+    <div id="container">
+            <div id="content">
+                    <div class="sub_con">
+                            <div class="left_con">
+                                <h2 class="sp_sub lnb_title">회원서비스</h2>
+                                <ul class="lnb">
+                                <li><a href="http://10.56.150.212/kcc/sub3.php#">로그인<span class="sp_sub select_ico"></span></a></li>
+                                <li><a href="http://10.56.150.212/kcc/sub3.php#" class="selected_hard">회원가입<span class="sp_sub select_ico"></span></a></li>
+                                <li><a href="http://10.56.150.212/kcc/sub3.php#">아이디/비밀번호찾기<span class="sp_sub select_ico"></span></a></li>
+                                <li><a href="http://10.56.150.212/kcc/sub3.php#">회원정보 수정<span class="sp_sub select_ico"></span></a></li>
+                                <li><a href="http://10.56.150.212/kcc/sub3.php#">개인정보 취급방침<span class="sp_sub select_ico"></span></a></li>
+                                </ul> 
+                            </div>		
+                            <div class="right_con">	
+                                    <p class="pg_nav">	
+                                        <a href="http://10.56.150.212/kcc/sub3.php#">홈</a>
+                                        <span>&gt;</span>
+                                        <a href="http://10.56.150.212/kcc/sub3.php#">회원서비스</a>						
+                                        <span>&gt;</span>
+                                        <strong>회원가입</strong>
+                                    </p>
+                                    <div class="join_wrap">	
+                                        <h2 class="sp_sub join_title">회원가입</h2>
+                                        <p class="join_txt">다양한 서비스와 풍부한 컨텐츠를 만나실 수 있는 회원가입입니다.</p>
+                                        <ol class="join_step">
+                                        <li>약관동의</li>
+                                        <li>본인인증<span class="sp_sub ico_arr"></span></li>
+                                        <li class="selected">회원정보입력<span class="sp_sub ico_arr"></span></li>
+                                        <li>가입완료<span class="sp_sub ico_arr"></span></li>
+                                        </ol>
+                                    </div>
+                                    <div class="article_box">
+                                            <div class="art_tit_wrap">
+                                                <h3 class="article_tit">상세정보 입력</h3>
+                                                <p class="tip"><em>*</em>표시는 필수입력 항목입니다.</p>
+                                            </div>					
+                                            <form action="http://10.56.150.212/kcc/join.php" method="post" id="frmJoin" name="frmJoin" onsubmit="return validForm()">
+                                                        <div class="enter_area">
+                                                            <fieldset>
+                                                                <table class="enter_form">
+                                                                <caption><span>회원정보 입력</span></caption>	
+                                                                <tbody><tr>
+                                                                    <th><span>한글이름</span><em>*</em></th>
+                                                                    <td><input type="text" id="ko_name" name="korName" class="inptxt"></td>
+                                                                </tr>	
+                                                                <tr>
+                                                                    <th><span>영문이름</span></th>
+                                                                    <td><input type="text" id="eg_name" name="engName" class="inptxt"></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <th><span>생년월일</span><em>*</em></th>
+                                                                    <td>
+                                                                            <div id="wrapDate">
+                                                                                <div class="date">
+                                                                                    <div class="selectric-wrapper selectric-selectbox selectric-selYear"><div class="selectric-hide-select"><select class="selectbox selYear" id="birthYear" name="birthYear" tabindex="0">
+                                                                                        <option value=""></option>
+                                                                                    <option value="2016">2016</option><option value="2015">2015</option><option value="2014">2014</option><option value="2013">2013</option><option value="2012">2012</option><option value="2011">2011</option><option value="2010">2010</option><option value="2009">2009</option><option value="2008">2008</option><option value="2007">2007</option><option value="2006">2006</option><option value="2005">2005</option><option value="2004">2004</option><option value="2003">2003</option><option value="2002">2002</option><option value="2001">2001</option><option value="2000">2000</option><option value="1999">1999</option><option value="1998">1998</option><option value="1997">1997</option><option value="1996">1996</option><option value="1995">1995</option><option value="1994">1994</option><option value="1993">1993</option><option value="1992">1992</option><option value="1991">1991</option><option value="1990">1990</option><option value="1989">1989</option><option value="1988">1988</option><option value="1987">1987</option><option value="1986">1986</option><option value="1985">1985</option><option value="1984">1984</option><option value="1983">1983</option><option value="1982">1982</option><option value="1981">1981</option><option value="1980">1980</option><option value="1979">1979</option><option value="1978">1978</option><option value="1977">1977</option><option value="1976">1976</option><option value="1975">1975</option><option value="1974">1974</option><option value="1973">1973</option><option value="1972">1972</option><option value="1971">1971</option><option value="1970">1970</option><option value="1969">1969</option><option value="1968">1968</option><option value="1967">1967</option><option value="1966">1966</option><option value="1965">1965</option><option value="1964">1964</option><option value="1963">1963</option><option value="1962">1962</option><option value="1961">1961</option><option value="1960">1960</option><option value="1959">1959</option><option value="1958">1958</option><option value="1957">1957</option><option value="1956">1956</option><option value="1955">1955</option><option value="1954">1954</option><option value="1953">1953</option><option value="1952">1952</option><option value="1951">1951</option><option value="1950">1950</option><option value="1949">1949</option><option value="1948">1948</option><option value="1947">1947</option><option value="1946">1946</option><option value="1945">1945</option><option value="1944">1944</option><option value="1943">1943</option><option value="1942">1942</option><option value="1941">1941</option><option value="1940">1940</option><option value="1939">1939</option><option value="1938">1938</option><option value="1937">1937</option><option value="1936">1936</option><option value="1935">1935</option><option value="1934">1934</option><option value="1933">1933</option><option value="1932">1932</option><option value="1931">1931</option><option value="1930">1930</option><option value="1929">1929</option><option value="1928">1928</option><option value="1927">1927</option><option value="1926">1926</option><option value="1925">1925</option><option value="1924">1924</option><option value="1923">1923</option><option value="1922">1922</option><option value="1921">1921</option><option value="1920">1920</option><option value="1919">1919</option><option value="1918">1918</option><option value="1917">1917</option><option value="1916">1916</option><option value="1915">1915</option><option value="1914">1914</option><option value="1913">1913</option><option value="1912">1912</option><option value="1911">1911</option><option value="1910">1910</option><option value="1909">1909</option><option value="1908">1908</option><option value="1907">1907</option><option value="1906">1906</option><option value="1905">1905</option><option value="1904">1904</option><option value="1903">1903</option><option value="1902">1902</option><option value="1901">1901</option></select></div><div class="selectric"><span class="label"></span><b class="button">▾</b></div><div class="selectric-items" tabindex="-1"><div class="selectric-scroll"><ul><li data-index="0" class="selected"></li><li data-index="1" class="">2016</li><li data-index="2" class="">2015</li><li data-index="3" class="">2014</li><li data-index="4" class="">2013</li><li data-index="5" class="">2012</li><li data-index="6" class="">2011</li><li data-index="7" class="">2010</li><li data-index="8" class="">2009</li><li data-index="9" class="">2008</li><li data-index="10" class="">2007</li><li data-index="11" class="">2006</li><li data-index="12" class="">2005</li><li data-index="13" class="">2004</li><li data-index="14" class="">2003</li><li data-index="15" class="">2002</li><li data-index="16" class="">2001</li><li data-index="17" class="">2000</li><li data-index="18" class="">1999</li><li data-index="19" class="">1998</li><li data-index="20" class="">1997</li><li data-index="21" class="">1996</li><li data-index="22" class="">1995</li><li data-index="23" class="">1994</li><li data-index="24" class="">1993</li><li data-index="25" class="">1992</li><li data-index="26" class="">1991</li><li data-index="27" class="">1990</li><li data-index="28" class="">1989</li><li data-index="29" class="">1988</li><li data-index="30" class="">1987</li><li data-index="31" class="">1986</li><li data-index="32" class="">1985</li><li data-index="33" class="">1984</li><li data-index="34" class="">1983</li><li data-index="35" class="">1982</li><li data-index="36" class="">1981</li><li data-index="37" class="">1980</li><li data-index="38" class="">1979</li><li data-index="39" class="">1978</li><li data-index="40" class="">1977</li><li data-index="41" class="">1976</li><li data-index="42" class="">1975</li><li data-index="43" class="">1974</li><li data-index="44" class="">1973</li><li data-index="45" class="">1972</li><li data-index="46" class="">1971</li><li data-index="47" class="">1970</li><li data-index="48" class="">1969</li><li data-index="49" class="">1968</li><li data-index="50" class="">1967</li><li data-index="51" class="">1966</li><li data-index="52" class="">1965</li><li data-index="53" class="">1964</li><li data-index="54" class="">1963</li><li data-index="55" class="">1962</li><li data-index="56" class="">1961</li><li data-index="57" class="">1960</li><li data-index="58" class="">1959</li><li data-index="59" class="">1958</li><li data-index="60" class="">1957</li><li data-index="61" class="">1956</li><li data-index="62" class="">1955</li><li data-index="63" class="">1954</li><li data-index="64" class="">1953</li><li data-index="65" class="">1952</li><li data-index="66" class="">1951</li><li data-index="67" class="">1950</li><li data-index="68" class="">1949</li><li data-index="69" class="">1948</li><li data-index="70" class="">1947</li><li data-index="71" class="">1946</li><li data-index="72" class="">1945</li><li data-index="73" class="">1944</li><li data-index="74" class="">1943</li><li data-index="75" class="">1942</li><li data-index="76" class="">1941</li><li data-index="77" class="">1940</li><li data-index="78" class="">1939</li><li data-index="79" class="">1938</li><li data-index="80" class="">1937</li><li data-index="81" class="">1936</li><li data-index="82" class="">1935</li><li data-index="83" class="">1934</li><li data-index="84" class="">1933</li><li data-index="85" class="">1932</li><li data-index="86" class="">1931</li><li data-index="87" class="">1930</li><li data-index="88" class="">1929</li><li data-index="89" class="">1928</li><li data-index="90" class="">1927</li><li data-index="91" class="">1926</li><li data-index="92" class="">1925</li><li data-index="93" class="">1924</li><li data-index="94" class="">1923</li><li data-index="95" class="">1922</li><li data-index="96" class="">1921</li><li data-index="97" class="">1920</li><li data-index="98" class="">1919</li><li data-index="99" class="">1918</li><li data-index="100" class="">1917</li><li data-index="101" class="">1916</li><li data-index="102" class="">1915</li><li data-index="103" class="">1914</li><li data-index="104" class="">1913</li><li data-index="105" class="">1912</li><li data-index="106" class="">1911</li><li data-index="107" class="">1910</li><li data-index="108" class="">1909</li><li data-index="109" class="">1908</li><li data-index="110" class="">1907</li><li data-index="111" class="">1906</li><li data-index="112" class="">1905</li><li data-index="113" class="">1904</li><li data-index="114" class="">1903</li><li data-index="115" class="">1902</li><li data-index="116" class="last">1901</li></ul></div></div><input class="selectric-input" tabindex="0"></div>
+                                                                                </div>
+                                                                                    <span class="year_txt">년</span>
+                                                                                <div class="date">
+                                                                                    <div class="selectric-wrapper selectric-selectbox selectric-selMonth"><div class="selectric-hide-select"><select class="selectbox selMonth" id="birthMonth" name="birthMonth" tabindex="0">
+                                                                                        <option value=""></option>
+                                                                                    <option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">10</option><option value="11">11</option><option value="12">12</option></select></div><div class="selectric"><span class="label"></span><b class="button">▾</b></div><div class="selectric-items" tabindex="-1"><div class="selectric-scroll"><ul><li data-index="0" class="selected"></li><li data-index="1" class="">1</li><li data-index="2" class="">2</li><li data-index="3" class="">3</li><li data-index="4" class="">4</li><li data-index="5" class="">5</li><li data-index="6" class="">6</li><li data-index="7" class="">7</li><li data-index="8" class="">8</li><li data-index="9" class="">9</li><li data-index="10" class="">10</li><li data-index="11" class="">11</li><li data-index="12" class="last">12</li></ul></div></div><input class="selectric-input" tabindex="0"></div>
+                                                                                </div>
+                                                                                <span class="year_txt">월</span>
+
+                                                                                <div class="date">
+                                                                                    <div class="selectric-wrapper selectric-selectbox selectric-selDay"><div class="selectric-hide-select"><select class="selectbox selDay" id="birthDay" name="birthDay" tabindex="0">
+                                                                                        <option value=""></option>
+                                                                                    <option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">10</option><option value="11">11</option><option value="12">12</option><option value="13">13</option><option value="14">14</option><option value="15">15</option><option value="16">16</option><option value="17">17</option><option value="18">18</option><option value="19">19</option><option value="20">20</option><option value="21">21</option><option value="22">22</option><option value="23">23</option><option value="24">24</option><option value="25">25</option><option value="26">26</option><option value="27">27</option><option value="28">28</option><option value="29">29</option><option value="30">30</option><option value="31">31</option></select></div><div class="selectric"><span class="label"></span><b class="button">▾</b></div><div class="selectric-items" tabindex="-1"><div class="selectric-scroll"><ul><li data-index="0" class="selected"></li><li data-index="1" class="">1</li><li data-index="2" class="">2</li><li data-index="3" class="">3</li><li data-index="4" class="">4</li><li data-index="5" class="">5</li><li data-index="6" class="">6</li><li data-index="7" class="">7</li><li data-index="8" class="">8</li><li data-index="9" class="">9</li><li data-index="10" class="">10</li><li data-index="11" class="">11</li><li data-index="12" class="">12</li><li data-index="13" class="">13</li><li data-index="14" class="">14</li><li data-index="15" class="">15</li><li data-index="16" class="">16</li><li data-index="17" class="">17</li><li data-index="18" class="">18</li><li data-index="19" class="">19</li><li data-index="20" class="">20</li><li data-index="21" class="">21</li><li data-index="22" class="">22</li><li data-index="23" class="">23</li><li data-index="24" class="">24</li><li data-index="25" class="">25</li><li data-index="26" class="">26</li><li data-index="27" class="">27</li><li data-index="28" class="">28</li><li data-index="29" class="">29</li><li data-index="30" class="">30</li><li data-index="31" class="last">31</li></ul></div></div><input class="selectric-input" tabindex="0"></div>
+                                                                                </div>
+                                                                                <span class="year_txt">일</span>
+                                                                            </div>
+                                                                    </td>
+                                                            </tr>	
+                                                            <tr>
+                                                                <th><label for="userid">아이디</label><em>*</em></th>
+                                                                <td>
+                                                                    <input type="text" onkeyup="vaildID()" id="userid" name="userid" class="inptxt">
+                                                                    <a class="btn_img btn_cnfrm" onclick="vaildID()"><span class="btn_img">중복확인</span></a>
+                                                                    <span class="tip2">사이트내에서 표시되는 본인정보이며 저장 후 수정하실 수 없습니다.</span>
+                                                                </td>
+                                                           </tr>
+                                                            <tr class="vaildHidden" id="idVaild">
+                                                                <td></td>
+                                                                <td><span class="txtVaild">vaildID</span></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th><label for="password">비밀번호</label><em>*</em></th>
+                                                                <td>
+                                                                    <input type="password" id="password" onkeyup="vaildPass()" name="password" class="inptxt">
+                                                                    <span class="tip2">영문 소문자, 숫자 포함 4자리 이상 10자리 이하입니다.</span>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th><label for="password_confirm">비밀번호 확인</label><em>*</em></th>
+                                                                <td>
+                                                                    <input type="password" id="password_confirm" onkeyup="vaildPass()" name="password_confirm" class="inptxt">
+                                                                    <span class="tip2">비밀번호를 한번 더 입력하세요.</span>
+                                                                </td>
+                                                            </tr>
+                                                            <tr class="vaildHidden" id="passVaild">
+                                                                <td></td>
+                                                                <td><span class="txtPassVaild">vaildpass</span></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th><span>전화번호</span></th>
+                                                                <td>
+                                                                    <div class="wrapPhone">
+                                                                        <div id="tel_g">
+                                                                            <div class="selectric-wrapper selectric-tel"><div class="selectric-hide-select"><select class="tel" id="tel_g" name="phoneGroup" tabindex="0">
+                                                                                        <option value=""></option>
+                                                                                        <option value="02">02</option>
+                                                                                        <option value="031">031</option>
+                                                                                        <option value="032">032</option>
+                                                                                        <option value="033">033</option>
+                                                                                        <option value="041">041</option>
+                                                                                        <option value="042">042</option>
+                                                                                        <option value="043">043</option>
+                                                                                        <option value="044">044</option>
+                                                                                        <option value="051">051</option>
+                                                                                        <option value="052">052</option>
+                                                                                        <option value="053">053</option>
+                                                                                        <option value="054">054</option>
+                                                                                        <option value="055">055</option>
+                                                                                        <option value="061">061</option>
+                                                                                        <option value="062">062</option>
+                                                                                        <option value="063">063</option>
+                                                                                        <option value="064">064</option>
+                                                                               </select></div><div class="selectric"><span class="label"></span><b class="button">▾</b></div><div class="selectric-items" tabindex="-1"><div class="selectric-scroll"><ul><li data-index="0" class="selected"></li><li data-index="1" class="">02</li><li data-index="2" class="">031</li><li data-index="3" class="">032</li><li data-index="4" class="">033</li><li data-index="5" class="">041</li><li data-index="6" class="">042</li><li data-index="7" class="">043</li><li data-index="8" class="">044</li><li data-index="9" class="">051</li><li data-index="10" class="">052</li><li data-index="11" class="">053</li><li data-index="12" class="">054</li><li data-index="13" class="">055</li><li data-index="14" class="">061</li><li data-index="15" class="">062</li><li data-index="16" class="">063</li><li data-index="17" class="last">064</li></ul></div></div><input class="selectric-input" tabindex="0"></div>
+                                                                        </div>
+                                                                        <div id="tel_me">
+                                                                            <span class="hyphen">-</span>
+                                                                            <input type="text" id="tel_m" name="phoneSecond" maxlength="4" title="전화번호 중간 번호 입력" class="inptxt w41">		
+                                                                            <span class="hyphen">-</span>
+                                                                            <input type="text" id="tel_e" name="phoneThird" maxlength="4" title="전화번호 마지막 번호 입력" class="inptxt w41">
+                                                                        </div>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                    <th><span>휴대폰번호</span><em>*</em></th>
+                                                                    <td>
+                                                                        <div class="wrapPhone">
+                                                                            <div id="cell_g">
+                                                                                <div class="selectric-wrapper selectric-cell"><div class="selectric-hide-select"><select class="cell" name="cellphoneGroup" tabindex="0">
+                                                                                        <option value=""></option>
+                                                                                        <option value="010">010</option>
+                                                                                        <option value="011">011</option>
+                                                                                        <option value="016">016</option>
+                                                                                        <option value="017">017</option>
+                                                                                        <option value="018">018</option>
+                                                                                        <option value="019">019</option>
+                                                                                 </select></div><div class="selectric"><span class="label"></span><b class="button">▾</b></div><div class="selectric-items" tabindex="-1"><div class="selectric-scroll"><ul><li data-index="0" class="selected"></li><li data-index="1" class="">010</li><li data-index="2" class="">011</li><li data-index="3" class="">016</li><li data-index="4" class="">017</li><li data-index="5" class="">018</li><li data-index="6" class="last">019</li></ul></div></div><input class="selectric-input" tabindex="0"></div>
+                                                                           </div>
+                                                                            <div id="cell_me">
+                                                                                <span class="hyphen">-</span>
+                                                                                <input type="text" id="cell_m" name="cellphoneSecond" maxlength="4" title="핸드폰 번호 중간 번호 입력" class="inptxt w41">		
+                                                                                <span class="hyphen">-</span>
+                                                                                <input type="text" id="cell_e" name="cellphoneThird" maxlength="4" title="핸드폰 번호 마지막 번호 입력" class="inptxt w41">
+                                                                            </div>
+                                                                        </div>
+                                                                        <span class="tip2">예약시 휴대폰으로 문자가 발송됩니다.</span>
+                                                                    </td>
+                                                                </tr>				
+                                                                <tr>
+                                                                    <th><span>SMS 수신여부</span><em>*</em></th>
+                                                                    <td>
+                                                                        <div class="rdo_wrap">
+                                                                            <span class="rdo_btn" onclick="fn_smsclick(&#39;Y&#39;);">
+                                                                            <input type="radio" name="sms" id="agreement_y" checked="checked" value="">
+                                                                            <span class="rdo_on" id="agree_fake_y"></span>
+                                                                            </span>
+                                                                            <label for="agreement_y">예</label>
+                                                                            <span class="rdo_btn" onclick="fn_smsclick(&#39;N&#39;);">
+                                                                            <input type="radio" name="sms" id="agreement_n" value="">
+                                                                            <span class="rdo_off" id="agree_fake_n"></span>
+                                                                            </span>
+                                                                            <label for="agreement_n">아니오</label>
+                                                                        </div>
+                                                                        <span class="tip2">회원공지 알람에 대한 수신여부입니다.</span>
+                                                                    </td>
+                                                                </tr>			
+                                                                <tr>
+                                                                    <th><label for="email">E-MAIL</label></th>
+                                                                    <td>
+                                                                        <input type="email" id="email" name="email" onkeyup="vaildEmail()" class="inptxt">
+                                                                    </td>
+                                                                </tr>
+                                                                <tr class="vaildHidden" id="emailVaild">
+                                                                    <td></td>
+                                                                    <td><span class="txtMailVaild">vaildEmail</span></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <th><span>자택 우편번호</span><em>*</em></th>
+                                                                    <td>
+                                                                        <input type="text" onclick="execDaumPostcode()" id="h_postcode" name="h_postcode" readonly="" class="inptxt w40">
+                                                                        <a onclick="execDaumPostcode()" class="btn_img btn_cnfrm"><span class="btn_img">우편번호 찾기</span></a>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <th><label for="home_addr1">자택주소</label><em>*</em></th>
+                                                                    <td>
+                                                                        <p><input type="text" id="home_addr1" name="home_addr1" readonly="" class="inptxt w416"></p>						
+                                                                        <p><input type="text" id="home_addr2" name="home_addr2" title="자택 상세주소" class="inptxt w416 gap"></p>
+                                                                    </td>
+                                                                </tr>			
+                                                                <tr>
+                                                                    <th><span>DM발송처</span><em>*</em></th>
+                                                                    <td>
+                                                                        <div class="rdo_wrap">
+                                                                            <span class="rdo_btn" onclick="fn_dmclick(&#39;H&#39;);">
+                                                                            <input type="radio" name="dm" id="dm_house" checked="checked" value="">
+                                                                            <span class="rdo_on" id="dm_fake_house"></span>
+                                                                            </span>
+                                                                            <label for="dm_house">자택</label>
+                                                                            <span class="rdo_btn" onclick="fn_dmclick(&#39;O&#39;);">
+                                                                            <input type="radio" name="dm" id="dm_office" value="">
+                                                                            <span class="rdo_off" id="dm_fake_office"></span>
+                                                                            </span>
+                                                                            <label for="dm_office">직장</label>
+                                                                        </div>
+                                                                    </td>
+                                                                </tr>										
+                                                                </tbody></table>
+                                                            </fieldset>	
+                                                            </div>					
+                                                            <div class="enter_area">
+                                                            <fieldset>
+                                                                <table class="enter_form">
+                                                                <tbody><tr>
+                                                                    <th><label for="office_name">직장명</label><em>*</em></th>
+                                                                    <td><input type="text" id="office_name" name="office_name" class="inptxt"></td>
+                                                                </tr>			
+                                                                <tr>
+                                                                    <th><label for="job_category">직종</label></th>
+                                                                    <td><input type="text" id="job_category" name="job_category" class="inptxt"></td>
+                                                                </tr>			
+                                                                <tr>
+                                                                    <th><label for="position">직위</label><em>*</em></th>
+                                                                    <td><input type="text" id="position" name="position" class="inptxt"></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <th><span>직장 우편번호</span><em>*</em></th>
+                                                                    <td>
+                                                                        <input type="text" onclick="execDaumPostcode_W()" id="o_postcode" name="o_postcode" readonly="" class="inptxt w40">
+                                                                        <a onclick="execDaumPostcode_W()" class="btn_img btn_cnfrm"><span class="btn_img">우편번호 찾기</span></a>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <th><label for="office_addr1">직장주소</label><em>*</em></th>
+                                                                    <td>
+                                                                        <p><input type="text" id="office_addr1" name="office_addr1" readonly="" class="inptxt w416"></p>						
+                                                                        <p><input type="text" id="office_addr2" name="office_addr2" title="직장 상세주소" class="inptxt w416 gap"></p>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <th><span>직장전화번호</span></th>
+                                                                    <td>
+                                                                        <div class="wrapPhone">
+                                                                            <div id="office_g">
+                                                                                <div class="selectric-wrapper selectric-tel"><div class="selectric-hide-select"><select class="tel" name="o_phoneGroup" id="office_g" tabindex="0">
+                                                                                        <option value=""></option>
+                                                                                        <option value="02">02</option>
+                                                                                        <option value="031">031</option>
+                                                                                        <option value="032">032</option>
+                                                                                        <option value="033">033</option>
+                                                                                        <option value="041">041</option>
+                                                                                        <option value="042">042</option>
+                                                                                        <option value="043">043</option>
+                                                                                        <option value="044">044</option>
+                                                                                        <option value="051">051</option>
+                                                                                        <option value="052">052</option>
+                                                                                        <option value="053">053</option>
+                                                                                        <option value="054">054</option>
+                                                                                        <option value="055">055</option>
+                                                                                        <option value="061">061</option>
+                                                                                        <option value="062">062</option>
+                                                                                        <option value="063">063</option>
+                                                                                        <option value="064">064</option>
+                                                                                    </select></div><div class="selectric"><span class="label"></span><b class="button">▾</b></div><div class="selectric-items" tabindex="-1"><div class="selectric-scroll"><ul><li data-index="0" class="selected"></li><li data-index="1" class="">02</li><li data-index="2" class="">031</li><li data-index="3" class="">032</li><li data-index="4" class="">033</li><li data-index="5" class="">041</li><li data-index="6" class="">042</li><li data-index="7" class="">043</li><li data-index="8" class="">044</li><li data-index="9" class="">051</li><li data-index="10" class="">052</li><li data-index="11" class="">053</li><li data-index="12" class="">054</li><li data-index="13" class="">055</li><li data-index="14" class="">061</li><li data-index="15" class="">062</li><li data-index="16" class="">063</li><li data-index="17" class="last">064</li></ul></div></div><input class="selectric-input" tabindex="0"></div>
+                                                                            </div>
+                                                                            <div id="office_me">
+                                                                                <span class="hyphen">-</span>
+                                                                                <input type="text" id="office_m" name="o_phoneSecond" maxlength="4" title="직장 전화번호 중간 번호 입력" class="inptxt w41">		
+                                                                                <span class="hyphen">-</span>
+                                                                                <input type="text" id="office_e" name="o_phoneThird" maxlength="4" title="직장 전화번호 마지막 번호 입력" class="inptxt w41">
+                                                                            </div>
+                                                                        </div>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <th><span>팩스번호</span></th>
+                                                                    <td>
+                                                                        <div class="wrapPhone">
+                                                                            <div id="fax_g">
+                                                                                <div class="selectric-wrapper selectric-tel"><div class="selectric-hide-select"><select class="tel" name="faxGroup" tabindex="0">
+                                                                                        <option value=""></option>
+                                                                                        <option value="02">02</option>
+                                                                                        <option value="031">031</option>
+                                                                                        <option value="032">032</option>
+                                                                                        <option value="033">033</option>
+                                                                                        <option value="041">041</option>
+                                                                                        <option value="042">042</option>
+                                                                                        <option value="043">043</option>
+                                                                                        <option value="044">044</option>
+                                                                                        <option value="051">051</option>
+                                                                                        <option value="052">052</option>
+                                                                                        <option value="053">053</option>
+                                                                                        <option value="054">054</option>
+                                                                                        <option value="055">055</option>
+                                                                                        <option value="061">061</option>
+                                                                                        <option value="062">062</option>
+                                                                                        <option value="063">063</option>
+                                                                                        <option value="064">064</option>
+                                                                                </select></div><div class="selectric"><span class="label"></span><b class="button">▾</b></div><div class="selectric-items" tabindex="-1"><div class="selectric-scroll"><ul><li data-index="0" class="selected"></li><li data-index="1" class="">02</li><li data-index="2" class="">031</li><li data-index="3" class="">032</li><li data-index="4" class="">033</li><li data-index="5" class="">041</li><li data-index="6" class="">042</li><li data-index="7" class="">043</li><li data-index="8" class="">044</li><li data-index="9" class="">051</li><li data-index="10" class="">052</li><li data-index="11" class="">053</li><li data-index="12" class="">054</li><li data-index="13" class="">055</li><li data-index="14" class="">061</li><li data-index="15" class="">062</li><li data-index="16" class="">063</li><li data-index="17" class="last">064</li></ul></div></div><input class="selectric-input" tabindex="0"></div>
+                                                                        </div>
+                                                                        <div id="fax_me">
+                                                                            <span class="hyphen">-</span>
+                                                                            <input type="text" name="faxSecond" id="fax_m" maxlength="4" title="직장 전화번호 중간 번호 입력" class="inptxt w41">		
+                                                                            <span class="hyphen">-</span>
+                                                                            <input type="text" name="faxThird" id="fax_e" maxlength="4" title="직장 전화번호 마지막 번호 입력" class="inptxt w41">
+                                                                        </div>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>			
+                                                            <tr>
+                                                                <th><span>결혼여부</span></th>
+                                                                <td>
+                                                                    <div class="rdo_wrap">
+                                                                        <span class="rdo_btn" onclick="fn_marryclick(&#39;N&#39;);">
+                                                                        <input type="radio" name="marry" id="marry_n" checked="checked" value="0">
+                                                                        <span class="rdo_on" id="marry_fake_n"></span>
+                                                                        </span>
+                                                                        <label for="marry_n">미혼</label>
+                                                                        <span class="rdo_btn" onclick="fn_marryclick(&#39;Y&#39;);">
+                                                                        <input type="radio" name="marry" id="marry_y" value="1">
+                                                                        <span class="rdo_off" id="marry_fake_y"></span>
+                                                                        </span>
+                                                                        <label for="marry_y">기혼</label>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                            <tr id="lineMarry" class="hideLine">
+                                                                <th><span>결혼기념일</span></th>
+                                                                <td>
+                                                                    <div id="wrapDate">
+                                                                        <div class="date">
+                                                                            <div class="selectric-wrapper selectric-selectbox selectric-selYear"><div class="selectric-hide-select"><select class="selectbox selYear" name="marryYear" tabindex="0">
+                                                                                <option value=""></option>
+                                                                            <option value="2016">2016</option><option value="2015">2015</option><option value="2014">2014</option><option value="2013">2013</option><option value="2012">2012</option><option value="2011">2011</option><option value="2010">2010</option><option value="2009">2009</option><option value="2008">2008</option><option value="2007">2007</option><option value="2006">2006</option><option value="2005">2005</option><option value="2004">2004</option><option value="2003">2003</option><option value="2002">2002</option><option value="2001">2001</option><option value="2000">2000</option><option value="1999">1999</option><option value="1998">1998</option><option value="1997">1997</option><option value="1996">1996</option><option value="1995">1995</option><option value="1994">1994</option><option value="1993">1993</option><option value="1992">1992</option><option value="1991">1991</option><option value="1990">1990</option><option value="1989">1989</option><option value="1988">1988</option><option value="1987">1987</option><option value="1986">1986</option><option value="1985">1985</option><option value="1984">1984</option><option value="1983">1983</option><option value="1982">1982</option><option value="1981">1981</option><option value="1980">1980</option><option value="1979">1979</option><option value="1978">1978</option><option value="1977">1977</option><option value="1976">1976</option><option value="1975">1975</option><option value="1974">1974</option><option value="1973">1973</option><option value="1972">1972</option><option value="1971">1971</option><option value="1970">1970</option><option value="1969">1969</option><option value="1968">1968</option><option value="1967">1967</option><option value="1966">1966</option><option value="1965">1965</option><option value="1964">1964</option><option value="1963">1963</option><option value="1962">1962</option><option value="1961">1961</option><option value="1960">1960</option><option value="1959">1959</option><option value="1958">1958</option><option value="1957">1957</option><option value="1956">1956</option><option value="1955">1955</option><option value="1954">1954</option><option value="1953">1953</option><option value="1952">1952</option><option value="1951">1951</option><option value="1950">1950</option><option value="1949">1949</option><option value="1948">1948</option><option value="1947">1947</option><option value="1946">1946</option><option value="1945">1945</option><option value="1944">1944</option><option value="1943">1943</option><option value="1942">1942</option><option value="1941">1941</option><option value="1940">1940</option><option value="1939">1939</option><option value="1938">1938</option><option value="1937">1937</option><option value="1936">1936</option><option value="1935">1935</option><option value="1934">1934</option><option value="1933">1933</option><option value="1932">1932</option><option value="1931">1931</option><option value="1930">1930</option><option value="1929">1929</option><option value="1928">1928</option><option value="1927">1927</option><option value="1926">1926</option><option value="1925">1925</option><option value="1924">1924</option><option value="1923">1923</option><option value="1922">1922</option><option value="1921">1921</option><option value="1920">1920</option><option value="1919">1919</option><option value="1918">1918</option><option value="1917">1917</option><option value="1916">1916</option><option value="1915">1915</option><option value="1914">1914</option><option value="1913">1913</option><option value="1912">1912</option><option value="1911">1911</option><option value="1910">1910</option><option value="1909">1909</option><option value="1908">1908</option><option value="1907">1907</option><option value="1906">1906</option><option value="1905">1905</option><option value="1904">1904</option><option value="1903">1903</option><option value="1902">1902</option><option value="1901">1901</option></select></div><div class="selectric"><span class="label"></span><b class="button">▾</b></div><div class="selectric-items" tabindex="-1"><div class="selectric-scroll"><ul><li data-index="0" class="selected"></li><li data-index="1" class="">2016</li><li data-index="2" class="">2015</li><li data-index="3" class="">2014</li><li data-index="4" class="">2013</li><li data-index="5" class="">2012</li><li data-index="6" class="">2011</li><li data-index="7" class="">2010</li><li data-index="8" class="">2009</li><li data-index="9" class="">2008</li><li data-index="10" class="">2007</li><li data-index="11" class="">2006</li><li data-index="12" class="">2005</li><li data-index="13" class="">2004</li><li data-index="14" class="">2003</li><li data-index="15" class="">2002</li><li data-index="16" class="">2001</li><li data-index="17" class="">2000</li><li data-index="18" class="">1999</li><li data-index="19" class="">1998</li><li data-index="20" class="">1997</li><li data-index="21" class="">1996</li><li data-index="22" class="">1995</li><li data-index="23" class="">1994</li><li data-index="24" class="">1993</li><li data-index="25" class="">1992</li><li data-index="26" class="">1991</li><li data-index="27" class="">1990</li><li data-index="28" class="">1989</li><li data-index="29" class="">1988</li><li data-index="30" class="">1987</li><li data-index="31" class="">1986</li><li data-index="32" class="">1985</li><li data-index="33" class="">1984</li><li data-index="34" class="">1983</li><li data-index="35" class="">1982</li><li data-index="36" class="">1981</li><li data-index="37" class="">1980</li><li data-index="38" class="">1979</li><li data-index="39" class="">1978</li><li data-index="40" class="">1977</li><li data-index="41" class="">1976</li><li data-index="42" class="">1975</li><li data-index="43" class="">1974</li><li data-index="44" class="">1973</li><li data-index="45" class="">1972</li><li data-index="46" class="">1971</li><li data-index="47" class="">1970</li><li data-index="48" class="">1969</li><li data-index="49" class="">1968</li><li data-index="50" class="">1967</li><li data-index="51" class="">1966</li><li data-index="52" class="">1965</li><li data-index="53" class="">1964</li><li data-index="54" class="">1963</li><li data-index="55" class="">1962</li><li data-index="56" class="">1961</li><li data-index="57" class="">1960</li><li data-index="58" class="">1959</li><li data-index="59" class="">1958</li><li data-index="60" class="">1957</li><li data-index="61" class="">1956</li><li data-index="62" class="">1955</li><li data-index="63" class="">1954</li><li data-index="64" class="">1953</li><li data-index="65" class="">1952</li><li data-index="66" class="">1951</li><li data-index="67" class="">1950</li><li data-index="68" class="">1949</li><li data-index="69" class="">1948</li><li data-index="70" class="">1947</li><li data-index="71" class="">1946</li><li data-index="72" class="">1945</li><li data-index="73" class="">1944</li><li data-index="74" class="">1943</li><li data-index="75" class="">1942</li><li data-index="76" class="">1941</li><li data-index="77" class="">1940</li><li data-index="78" class="">1939</li><li data-index="79" class="">1938</li><li data-index="80" class="">1937</li><li data-index="81" class="">1936</li><li data-index="82" class="">1935</li><li data-index="83" class="">1934</li><li data-index="84" class="">1933</li><li data-index="85" class="">1932</li><li data-index="86" class="">1931</li><li data-index="87" class="">1930</li><li data-index="88" class="">1929</li><li data-index="89" class="">1928</li><li data-index="90" class="">1927</li><li data-index="91" class="">1926</li><li data-index="92" class="">1925</li><li data-index="93" class="">1924</li><li data-index="94" class="">1923</li><li data-index="95" class="">1922</li><li data-index="96" class="">1921</li><li data-index="97" class="">1920</li><li data-index="98" class="">1919</li><li data-index="99" class="">1918</li><li data-index="100" class="">1917</li><li data-index="101" class="">1916</li><li data-index="102" class="">1915</li><li data-index="103" class="">1914</li><li data-index="104" class="">1913</li><li data-index="105" class="">1912</li><li data-index="106" class="">1911</li><li data-index="107" class="">1910</li><li data-index="108" class="">1909</li><li data-index="109" class="">1908</li><li data-index="110" class="">1907</li><li data-index="111" class="">1906</li><li data-index="112" class="">1905</li><li data-index="113" class="">1904</li><li data-index="114" class="">1903</li><li data-index="115" class="">1902</li><li data-index="116" class="last">1901</li></ul></div></div><input class="selectric-input" tabindex="0"></div>
+                                                                        </div>
+                                                                            <span class="year_txt">년</span>
+                                                                        <div class="date">
+                                                                            <div class="selectric-wrapper selectric-selectbox selectric-selMonth"><div class="selectric-hide-select"><select class="selectbox selMonth" name="marryMonth" tabindex="0">
+                                                                                <option value=""></option>
+                                                                            <option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">10</option><option value="11">11</option><option value="12">12</option></select></div><div class="selectric"><span class="label"></span><b class="button">▾</b></div><div class="selectric-items" tabindex="-1"><div class="selectric-scroll"><ul><li data-index="0" class="selected"></li><li data-index="1" class="">1</li><li data-index="2" class="">2</li><li data-index="3" class="">3</li><li data-index="4" class="">4</li><li data-index="5" class="">5</li><li data-index="6" class="">6</li><li data-index="7" class="">7</li><li data-index="8" class="">8</li><li data-index="9" class="">9</li><li data-index="10" class="">10</li><li data-index="11" class="">11</li><li data-index="12" class="last">12</li></ul></div></div><input class="selectric-input" tabindex="0"></div>
+                                                                        </div>
+                                                                        <span class="year_txt">월</span>
+
+                                                                        <div class="date">
+                                                                            <div class="selectric-wrapper selectric-selectbox selectric-selDay"><div class="selectric-hide-select"><select class="selectbox selDay" name="marryDay" tabindex="0">
+                                                                                <option value=""></option>
+                                                                            <option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">10</option><option value="11">11</option><option value="12">12</option><option value="13">13</option><option value="14">14</option><option value="15">15</option><option value="16">16</option><option value="17">17</option><option value="18">18</option><option value="19">19</option><option value="20">20</option><option value="21">21</option><option value="22">22</option><option value="23">23</option><option value="24">24</option><option value="25">25</option><option value="26">26</option><option value="27">27</option><option value="28">28</option><option value="29">29</option><option value="30">30</option><option value="31">31</option></select></div><div class="selectric"><span class="label"></span><b class="button">▾</b></div><div class="selectric-items" tabindex="-1"><div class="selectric-scroll"><ul><li data-index="0" class="selected"></li><li data-index="1" class="">1</li><li data-index="2" class="">2</li><li data-index="3" class="">3</li><li data-index="4" class="">4</li><li data-index="5" class="">5</li><li data-index="6" class="">6</li><li data-index="7" class="">7</li><li data-index="8" class="">8</li><li data-index="9" class="">9</li><li data-index="10" class="">10</li><li data-index="11" class="">11</li><li data-index="12" class="">12</li><li data-index="13" class="">13</li><li data-index="14" class="">14</li><li data-index="15" class="">15</li><li data-index="16" class="">16</li><li data-index="17" class="">17</li><li data-index="18" class="">18</li><li data-index="19" class="">19</li><li data-index="20" class="">20</li><li data-index="21" class="">21</li><li data-index="22" class="">22</li><li data-index="23" class="">23</li><li data-index="24" class="">24</li><li data-index="25" class="">25</li><li data-index="26" class="">26</li><li data-index="27" class="">27</li><li data-index="28" class="">28</li><li data-index="29" class="">29</li><li data-index="30" class="">30</li><li data-index="31" class="last">31</li></ul></div></div><input class="selectric-input" tabindex="0"></div>
+                                                                        </div>
+                                                                        <span class="year_txt">일</span>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>										
+                                                            </tbody></table>
+                                                        </fieldset>	
+                                                        </div>
+                                                        <div class="btn_wrap">
+                                                            <a href="http://10.56.150.212/kcc/sub3.php#" class="sp_sub btn_cancle">취소</a>
+                                                            <button type="submit" class="sp_sub btn_next" value="다음">
+                                                        </button></div>
+                                                     </form>
+                                                </div>
+                                            </div>
+                                        </div>                     
+                            </div>
+                    </div>
+<!-- //container -->
+                    <hr>
+
+<!-- footer -->
+                   <div id="footer">		
+                           <div class="f_inner">
+                                   <p class="policy_sub">
+                                           <a href="http://10.56.150.212/kcc/sub3.php#">회칙 및 이용약관</a>
+                                           <a href="http://10.56.150.212/kcc/sub3.php#">개인정보 취급방침</a>
+                                           <a href="http://10.56.150.212/kcc/sub3.php#">인트라넷</a>
+                                   </p>
+                                   <div class="site_info">
+                                           <p class="none_style">(주)금강레저 대표자:조종호</p>
+                                           <p>경기도 여주군 가남면 본두리 1-2</p>
+                                           <p>대표전화: 031-880-6000</p>
+                                           <p>대표전화: 031-884-5155</p><br>
+                                           <p class="none_style">사업자등록번호: 126-81-07997</p>
+                                           <p>통신판매법 신고 : 2009-경기여주-0058</p>
+                                           <p>개인정보관리책임자 : 윤두한 031-880-6000</p>
+                                           <p><a href="http://10.56.150.212/kcc/sub3.php#" class="licenseInfo sp_main">사업자 정보확인</a></p>	
+                                   </div>
+                                   <address>Copyright (c) Kumkang leisure Ltd.  All rights reserved</address>
+                           </div>	
+                   </div>
+<!-- //footer -->
+            </div>
+    
+</body></html>

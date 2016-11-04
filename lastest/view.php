@@ -5,7 +5,7 @@ require_once 'inc/dbcon.php';
 
     $sql = "SELECT * FROM notice WHERE idx = :idx";
     $stmt = $pdo -> prepare($sql);
-    $stmt -> bindValue(":idx",$idx);
+    $stmt -> bindValue(":idx", $idx);
     $stmt -> execute();
     $result = $stmt -> fetch();
 
