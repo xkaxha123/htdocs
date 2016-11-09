@@ -1,5 +1,14 @@
 <?php
-require_once 'inc/header.php';
+    require_once 'inc/header.php';
+    require_once 'inc/dbcon.php';
+
+    $idx = $_GET['idx'];
+
+    $sql = "SELECT * FROM notice WHERE idx = :idx";
+    $stmt = $pdo -> prepare($sql);
+    $stmt -> bindValue(":idx", $idx);
+    $stmt -> execute();
+    $result = $stmt -> fetch();
 ?>
 <!-- //skip nav -->
 <div id="wrap" class="sub_bg">
@@ -112,9 +121,10 @@ require_once 'inc/header.php';
 						<strong>회원가입</strong>
 					</p>
                     <div>
-                        <form name="writeform" action="view.php" method="post"><br>
-                            제목: <input type ="text" name ="title"><br><br>
-                            내용: <textarea name ="content" cols ="100" rows ="10"></textarea><br>
+                        <form name="writeform" action="action.php" method="post"><br>
+                            제목: <input type="text" name ="title" value="<?= $result['title'] ?>"><br><br>
+                            내용: <textarea name="content" cols ="100" rows ="10" ><?= $result['content'] ?></textarea><br>
+                            <input type="hidden" name="idx" value="<?= $idx ?>">
                             <input type ="submit" value="저장">
                         </form>
                     </div>

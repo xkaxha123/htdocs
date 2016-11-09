@@ -155,7 +155,7 @@
                             ?>
                         </tbody>
 					</table>
-
+                        <br><a href="board_insert.php" style="float:right;">글쓰기</a>
 					</div>								
 
 				</div>

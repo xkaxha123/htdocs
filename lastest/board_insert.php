@@ -115,7 +115,7 @@
 					</p>
                     <div>
                         <form name="writeform" action="action.php" method="post"><br>
-                            <strong>제목 </strong><input type ="text" name ="title"><br><br>
+                            <strong>제목 </strong><input type ="text" name ="title" maxlength="20" style="width:300px;"><br><br>
                             <strong>내용 </strong><textarea name ="content" cols ="100" rows ="10"></textarea><br>
                             <input type ="submit" value="저장">
                         </form>

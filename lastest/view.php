@@ -9,6 +9,13 @@ require_once 'inc/dbcon.php';
     $stmt -> execute();
     $result = $stmt -> fetch();
 
+    $result['count'] = $result['count'] + 1;
+    $sql = "UPDATE notice SET count=:result WHERE idx=:idx";
+    $stmh = $pdo -> prepare($sql);
+    $stmh -> bindValue(":result", $result['count']);
+    $stmh -> bindValue(":idx", $idx);
+    $stmh -> execute();
+
 ?>
 <!-- //skip nav -->
 <div id="wrap" class="sub_bg">
@@ -121,13 +128,17 @@ require_once 'inc/dbcon.php';
 						<strong>회원가입</strong>
 					</p>
 					<div class="join_wrap">
-
-                                    <table id="view">
-                                        <?php $result['title']; ?>
-                                    </table>
-                                        <p style="float:right"><a href="/update.php">수정</a></p>
-                                        <p style="float:right"><a href="/delete.php">삭제</a></p>  
-                                        <p style="float:right"><a href="sub1.php">목록</a></p>
+                            <table id="view">
+                                <?php
+                                    print "<strong>제목: <strong>".$result['title'];
+                                    print "&nbsp;&nbsp;&nbsp;<strong>작성일: <strong>".$result['date'];
+                                    print "&nbsp;&nbsp;&nbsp;<strong>조회수: <strong>".$result['count'];
+                                    print "<br><br><strong>내용: <strong>".$result['content'];
+                                ?>
+                            </table>
+                                <p style="float:right"><a href="/update.php?idx=<?= $idx ?>">수정</a></p>
+                                <p style="float:right"><a href="/delete.php?idx=<?= $idx ?>">삭제&nbsp;</a></p>  
+                                <p style="float:right"><a href="sub1.php">목록&nbsp;</a></p>
 			         </div>	
 		</div>	
 	</div>
